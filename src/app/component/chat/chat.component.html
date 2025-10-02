@@ -1,0 +1,62 @@
+<div class="chat-wrapper">
+  <!-- Colonne gauche : liste des utilisateurs -->
+  <div class="users-list">
+    <div *ngIf="isLoadingUsers" class="spinner-container">
+      <div class="spinner"></div>
+      <div>Chargement des utilisateurs...</div>
+    </div>
+    <ng-container *ngIf="!isLoadingUsers">
+      <div (click)="selectUser(user)" *ngFor="let user of users" [class.selected]="selectedUser?.id === user.id"
+           class="user-item">
+        <div class="avatar">
+          <ng-container *ngIf="user.avatar; else initials">
+            <img [src]="user.avatar" alt="avatar"/>
+          </ng-container>
+          <ng-template #initials>{{ getUserInitials(user?.name) }}</ng-template>
+        </div>
+        <div class="user-info">
+          <div class="user-name">{{ user.name }}</div>
+          <div  [class.online]="user.online" class="user-status">
+            {{ user.online ? 'En ligne' : 'En ligne' }}
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Colonne droite : discussion -->
+  <div class="chat-area">
+    <div *ngIf="selectedUser" class="chat-header">
+      <div class="avatar">
+        <ng-container *ngIf="selectedUser.avatar; else selInitials">
+          <img [src]="selectedUser.avatar" alt="avatar"/>
+        </ng-container>
+        <ng-template #selInitials>{{ getUserInitials(selectedUser.name) }}</ng-template>
+      </div>
+      <div class="chat-user-info">
+        <div class="chat-user-name">{{ selectedUser.name }}</div>
+        <div  [class.online]="selectedUser.online" class="chat-user-status">
+          {{ selectedUser.online ? 'En ligne' : 'En ligne' }}
+        </div>
+      </div>
+    </div>
+    <div *ngIf="selectedUser" class="messages-list">
+      <div *ngIf="isLoadingMessages" class="spinner-container">
+        <div class="spinner"></div>
+        <div>Chargement des messages...</div>
+      </div>
+      <ng-container *ngIf="!isLoadingMessages">
+        <div *ngFor="let msg of currentMessages" [class.me]="msg.sender.id === currentUser.id" [class.other]="msg.sender.id !== currentUser.id"
+             class="message-bubble">
+          <div class="message-content">{{ msg.content }}</div>
+          <div class="message-time">{{ msg.time }}</div>
+        </div>
+        <div #messagesEnd></div>
+      </ng-container>
+    </div>
+    <div *ngIf="selectedUser" class="chat-input-area">
+      <input (keydown.enter)="sendMessage()" [(ngModel)]="messageInput" placeholder="Écrire un message..." type="text"/>
+      <button (click)="sendMessage()" [disabled]="!messageInput.trim()">Envoyer</button>
+    </div>
+  </div>
+</div>

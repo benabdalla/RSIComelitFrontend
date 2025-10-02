@@ -1,0 +1,134 @@
+body {
+	background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%) !important;
+}
+
+.container {
+	max-width: 1200px;
+}
+
+.profile-sidebar {
+	background: linear-gradient(135deg, #fff 60%, #f0f4fa 100%);
+	border-radius: 18px;
+	box-shadow: 0 4px 24px 0 rgba(60, 72, 88, 0.10), 0 1.5px 4px 0 rgba(60, 72, 88, 0.08);
+	padding: 2rem 1.5rem 1.5rem 1.5rem;
+	margin-bottom: 2rem;
+	min-height: 220px;
+	transition: box-shadow 0.2s;
+}
+
+.profile-sidebar h2 {
+	font-size: 1.3rem;
+	font-weight: 700;
+	margin-bottom: 1.2rem;
+	color: #2d3748;
+}
+
+.profile-sidebar a {
+	color: #374151;
+	border-radius: 10px;
+	margin-bottom: 0.5rem;
+	transition: background 0.2s, color 0.2s;
+	font-weight: 500;
+}
+.profile-sidebar a:hover {
+	background: linear-gradient(90deg, #e0e7ef 0%, #f8fafc 100%);
+	color: #1976d2;
+	text-decoration: none;
+}
+.profile-sidebar .badge {
+	background: #e3e8f0 !important;
+	color: #374151 !important;
+	font-size: 0.85em;
+	font-weight: 600;
+	padding: 0.4em 0.8em;
+}
+
+.timeline-posts {
+	margin-top: 2rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.timeline-posts app-post {
+	display: block;
+	margin-bottom: 0.5rem;
+	border-radius: 18px;
+	box-shadow: 0 2px 12px 0 rgba(60, 72, 88, 0.10), 0 1.5px 4px 0 rgba(60, 72, 88, 0.08);
+	background: #fff;
+	padding: 0.5rem 0.5rem 0 0.5rem;
+	transition: box-shadow 0.2s;
+}
+.timeline-posts app-post:hover {
+	box-shadow: 0 6px 24px 0 rgba(60, 72, 88, 0.16), 0 2px 8px 0 rgba(60, 72, 88, 0.10);
+}
+
+.mat-h3 {
+	font-size: 1.4rem !important;
+	font-weight: 700 !important;
+	color: #1976d2 !important;
+	margin-bottom: 1.2rem !important;
+}
+
+.mat-btn-lg {
+	font-size: 1.1rem !important;
+	padding: 0.7em 2.2em !important;
+	border-radius: 2em !important;
+	font-weight: 600 !important;
+	box-shadow: 0 2px 8px 0 rgba(25, 118, 210, 0.10);
+	background: linear-gradient(90deg, #1976d2 0%, #42a5f5 100%) !important;
+	color: #fff !important;
+	transition: background 0.2s, box-shadow 0.2s;
+}
+.mat-btn-lg:hover {
+	background: linear-gradient(90deg, #1565c0 0%, #1976d2 100%) !important;
+	color: #fff !important;
+	box-shadow: 0 4px 16px 0 rgba(25, 118, 210, 0.18);
+}
+
+.fully-centered {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 40vh;
+}
+
+.text-center {
+	text-align: center !important;
+}
+
+.fw-500 {
+	font-weight: 500 !important;
+}
+
+@media (max-width: 991px) {
+	.container {
+		max-width: 98vw;
+		padding: 0 0.5rem;
+	}
+	.profile-sidebar {
+		margin-bottom: 1.5rem;
+		min-height: unset;
+	}
+	.timeline-posts {
+		margin-top: 1rem;
+		gap: 1rem;
+	}
+}
+
+@media (max-width: 767px) {
+	.profile-sidebar {
+		position: static !important;
+		top: unset !important;
+		margin-bottom: 1rem;
+		padding: 1.2rem 0.7rem 1rem 0.7rem;
+	}
+	.timeline-posts app-post {
+		border-radius: 12px;
+		padding: 0.2rem 0.2rem 0 0.2rem;
+	}
+	.mat-btn-lg {
+		font-size: 1rem !important;
+		padding: 0.6em 1.2em !important;
+	}
+}

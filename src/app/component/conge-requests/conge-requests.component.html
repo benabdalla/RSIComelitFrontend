@@ -1,0 +1,77 @@
+<div class="conge-header">
+  <button (click)="openCreateModal()" color="primary" mat-fab>
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+
+<mat-tab-group>
+  <mat-tab label="My requests">
+    <table [dataSource]="myRequests" class="mat-elevation-z8" mat-table>
+      <!-- Columns -->
+      <ng-container matColumnDef="startDate">
+        <th *matHeaderCellDef mat-header-cell>Start</th>
+        <td *matCellDef="let req" mat-cell>{{ req.startDate }}</td>
+      </ng-container>
+      <ng-container matColumnDef="endDate">
+        <th *matHeaderCellDef mat-header-cell>End</th>
+        <td *matCellDef="let req" mat-cell>{{ req.endDate }}</td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th *matHeaderCellDef mat-header-cell>Status</th>
+        <td *matCellDef="let req" mat-cell>
+          <span *ngIf="req.status === 'DRAFT'" class="badge badge-draft">{{ req.status }}</span>
+          <span *ngIf="req.status === 'ACCEPTED'" class="badge badge-accepte">{{ req.status }}</span>
+          <span *ngIf="req.status === 'REJECTED'" class="badge badge-refuse">{{ req.status }}</span>
+          <span *ngIf="req.status === 'PENDING'">{{ req.status }}</span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="validator">
+        <th *matHeaderCellDef mat-header-cell>Validator</th>
+        <td *matCellDef="let req" mat-cell>{{ req?.validator?.firstName }} {{ req?.validator?.lastName }}</td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th *matHeaderCellDef mat-header-cell>Actions</th>
+        <td *matCellDef="let req" mat-cell>
+          <button (click)="openEditModal(req)" *ngIf="req.status === 'DRAFT'" mat-icon-button>
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button (click)="sendRequest(req)" *ngIf="req.status === 'DRAFT'" mat-icon-button>
+            <mat-icon>send</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr *matHeaderRowDef="['startDate', 'endDate', 'status', 'validator','actions']" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: ['startDate', 'endDate', 'status','validator', 'actions'];" mat-row></tr>
+    </table>
+  </mat-tab>
+  <mat-tab label="Requests to process">
+    <table [dataSource]="toValidateRequests" class="mat-elevation-z8" mat-table>
+      <!-- Columns -->
+      <ng-container matColumnDef="requesterId">
+        <th *matHeaderCellDef mat-header-cell>Requester</th>
+        <td *matCellDef="let req" mat-cell>{{ req?.requester?.firstName }} {{ req?.requester?.lastName }}</td>
+      </ng-container>
+      <ng-container matColumnDef="startDate">
+        <th *matHeaderCellDef mat-header-cell>Start</th>
+        <td *matCellDef="let req" mat-cell>{{ req.startDate }}</td>
+      </ng-container>
+      <ng-container matColumnDef="endDate">
+        <th *matHeaderCellDef mat-header-cell>End</th>
+        <td *matCellDef="let req" mat-cell>{{ req.endDate }}</td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th *matHeaderCellDef mat-header-cell>Actions</th>
+        <td *matCellDef="let req" mat-cell>
+          <button (click)="validateRequest(req)" color="primary" mat-icon-button>
+            <mat-icon>check</mat-icon>
+          </button>
+          <button (click)="rejectRequest(req)" color="warn" mat-icon-button>
+            <mat-icon>close</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr *matHeaderRowDef="['requesterId', 'startDate', 'endDate', 'actions']" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: ['requesterId', 'startDate', 'endDate', 'actions'];" mat-row></tr>
+    </table>
+  </mat-tab>
+</mat-tab-group>

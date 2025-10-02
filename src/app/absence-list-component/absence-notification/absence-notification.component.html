@@ -1,0 +1,249 @@
+<div class="justification-modal">
+  <!-- Modal Header -->
+  <div class="modal-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">edit_calendar</mat-icon>
+      <div class="header-text">
+        <h2>Absence Management</h2>
+        <p *ngIf="selectedAbsence">{{ selectedAbsence.firstName }} {{ selectedAbsence.lastName }} - {{ selectedAbsence.date | date:'fullDate' }}</p>
+        <p *ngIf="!selectedAbsence">Select an absence to justify</p>
+      </div>
+    </div>
+    <button mat-icon-button (click)="onCancel()" class="close-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Modal Content -->
+  <div class="modal-content">
+    <!-- Absence List Section -->
+    <div class="absence-section" *ngIf="!selectedAbsence">
+      <h3>
+        <mat-icon>list</mat-icon>
+        Absences Requiring Justification
+      </h3>
+
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading absences...</p>
+      </div>
+
+      <div *ngIf="!loading && absences.length === 0" class="no-absences">
+        <mat-icon>check_circle</mat-icon>
+        <p>No absences requiring justification</p>
+      </div>
+
+      <mat-list *ngIf="!loading && absences.length > 0" class="absence-list">
+        <mat-list-item *ngFor="let absence of absences"
+                       class="absence-item"
+                       [class]="getAbsenceStatusClass(absence.status)"
+                       (click)="selectAbsence(absence)">
+          <mat-icon matListItemIcon [class]="getAbsenceStatusClass(absence.status)">
+            {{ getAbsenceStatusIcon(absence.status) }}
+          </mat-icon>
+          <div matListItemTitle class="absence-info">
+            <div class="employee-name">{{ absence.firstName }} {{ absence.lastName }}</div>
+            <div class="absence-details">
+              <span class="date">{{ absence.date | date:'mediumDate' }}</span>
+              <span class="status">{{ absence.status | titlecase }}</span>
+            </div>
+          </div>
+          <div matListItemMeta class="absence-actions">
+            <mat-icon>chevron_right</mat-icon>
+          </div>
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-list>
+    </div>
+
+    <!-- Justification Form Section -->
+    <form [formGroup]="justificationForm" (ngSubmit)="onSubmit()" *ngIf="selectedAbsence">
+
+      <!-- Back Button -->
+      <div class="back-section">
+        <button type="button" mat-stroked-button (click)="selectedAbsence = null" class="back-btn">
+          <mat-icon>arrow_back</mat-icon>
+          Back to List
+        </button>
+      </div>
+
+      <!-- Selected Absence Info -->
+      <div class="selected-absence-info">
+        <div class="employee-card">
+          <mat-icon class="employee-icon">person</mat-icon>
+          <div class="employee-details">
+            <h4>{{ selectedAbsence.firstName }} {{ selectedAbsence.lastName }}</h4>
+            <p>{{ selectedAbsence.email }}</p>
+            <div class="absence-meta">
+              <span class="date">
+                <mat-icon>event</mat-icon>
+                {{ selectedAbsence.date | date:'fullDate' }}
+              </span>
+              <span class="status" [class]="getAbsenceStatusClass(selectedAbsence.status)">
+                <mat-icon>{{ getAbsenceStatusIcon(selectedAbsence.status) }}</mat-icon>
+                {{ selectedAbsence.status | titlecase }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Justification Type Selection -->
+      <div class="form-section">
+        <h3>
+          <mat-icon>category</mat-icon>
+          Absence Type
+        </h3>
+        <mat-radio-group formControlName="type" class="type-selection">
+          <div *ngFor="let type of justificationTypes" class="type-option">
+            <mat-radio-button [value]="type.value" class="type-radio">
+              <div class="type-content">
+                <mat-icon>{{ type.icon }}</mat-icon>
+                <span>{{ type.label }}</span>
+              </div>
+            </mat-radio-button>
+          </div>
+        </mat-radio-group>
+        <mat-error *ngIf="typeControl?.invalid && typeControl?.touched">
+          Please select an absence type
+        </mat-error>
+      </div>
+
+      <!-- Date Range -->
+      <div class="form-section">
+        <h3>
+          <mat-icon>date_range</mat-icon>
+          Date Range
+        </h3>
+        <div class="date-inputs">
+          <mat-form-field appearance="outline" class="date-field">
+            <mat-label>Start Date</mat-label>
+            <input matInput [matDatepicker]="startPicker" formControlName="startDate" readonly>
+            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="date-field">
+            <mat-label>End Date</mat-label>
+            <input matInput [matDatepicker]="endPicker" formControlName="endDate" readonly>
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <mat-checkbox formControlName="isRecurring" class="recurring-checkbox">
+          This is a recurring absence pattern
+        </mat-checkbox>
+      </div>
+
+      <!-- Reason Text Area -->
+      <div class="form-section">
+        <h3>
+          <mat-icon>description</mat-icon>
+          Detailed Explanation
+        </h3>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Please provide a detailed explanation</mat-label>
+          <textarea matInput
+                    formControlName="reason"
+                    rows="4"
+                    placeholder="Describe the circumstances of your absence..."
+                    maxlength="500">
+          </textarea>
+          <mat-hint align="end">
+            {{ reasonControl?.value?.length || 0 }}/500 characters
+          </mat-hint>
+          <mat-error *ngIf="reasonControl?.invalid && reasonControl?.touched">
+            <span *ngIf="reasonControl?.errors?.['required']">Explanation is required</span>
+            <span *ngIf="reasonControl?.errors?.['minlength']">Minimum 10 characters required</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="form-section">
+        <h3>
+          <mat-icon>contact_phone</mat-icon>
+          Emergency Contact (Optional)
+        </h3>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Emergency contact information</mat-label>
+          <input matInput formControlName="contactInfo" placeholder="Phone number or alternative contact">
+          <mat-icon matSuffix>phone</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- File Attachments -->
+      <div class="form-section">
+        <h3>
+          <mat-icon>attach_file</mat-icon>
+          Supporting Documents
+        </h3>
+
+        <!-- File Upload Area -->
+        <div class="file-upload-area">
+          <input type="file"
+                 #fileInput
+                 multiple
+                 [accept]="allowedFileTypes.join(',')"
+                 (change)="onFileSelect($event)"
+                 style="display: none;">
+
+          <div class="upload-zone" (click)="fileInput.click()">
+            <mat-icon class="upload-icon">cloud_upload</mat-icon>
+            <p>Click to upload or drag & drop files</p>
+            <small>Supported: JPEG, PNG, PDF, TXT (Max 5MB each)</small>
+          </div>
+        </div>
+
+        <!-- Attached Files List -->
+        <div class="attached-files" *ngIf="attachedFiles.length > 0">
+          <h4>Attached Files:</h4>
+          <div *ngFor="let file of attachedFiles; let i = index" class="file-item">
+            <mat-icon class="file-icon">{{ getFileIcon(file.type) }}</mat-icon>
+            <div class="file-info">
+              <span class="file-name">{{ file.name }}</span>
+              <span class="file-size">{{ getFileSize(file.size) }}</span>
+            </div>
+            <button type="button"
+                    mat-icon-button
+                    class="remove-file-btn"
+                    (click)="removeFile(i)"
+                    matTooltip="Remove file">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Modal Footer -->
+  <div class="modal-footer">
+    <div class="footer-info">
+      <mat-icon class="info-icon">info</mat-icon>
+      <span *ngIf="selectedAbsence">Your justification will be reviewed by HR</span>
+      <span *ngIf="!selectedAbsence">Select an absence from the list above to justify</span>
+    </div>
+
+    <div class="footer-actions" *ngIf="selectedAbsence">
+      <button type="button"
+              mat-stroked-button
+              (click)="onCancel()"
+              [disabled]="isSubmitting">
+        Cancel
+      </button>
+
+      <button type="submit"
+              mat-raised-button
+              color="primary"
+              (click)="onSubmit()"
+              [disabled]="!justificationForm.valid || isSubmitting"
+              class="submit-btn">
+        <mat-spinner *ngIf="isSubmitting" diameter="20" class="submit-spinner"></mat-spinner>
+        <mat-icon *ngIf="!isSubmitting">send</mat-icon>
+        {{ isSubmitting ? 'Submitting...' : 'Submit Justification' }}
+      </button>
+    </div>
+  </div>
+</div>

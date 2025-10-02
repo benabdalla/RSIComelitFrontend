@@ -1,0 +1,12 @@
+<div class="mt-100 me-auto ms-auto" style="width: 500px;">
+	<mat-card class="p-4">
+		<mat-card-title class="pb-3"
+			[ngClass]="{'text-danger' : messageType === 'error', 'text-success' : messageType === 'success'}">
+			{{ messageHeader }}
+		</mat-card-title>
+
+		<mat-card-subtitle>
+			{{ messageDetail }}
+		</mat-card-subtitle>
+	</mat-card>
+</div>

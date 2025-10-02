@@ -1,0 +1,261 @@
+<!--<c-header class="mb-4 d-print-none" position="sticky">-->
+<ng-container>
+  <c-container [fluid]="true" class="border-bottom px-4">
+    <button
+      [cSidebarToggle]="sidebarId()"
+      cHeaderToggler
+      class="btn"
+      toggle="visible"
+      style="margin-inline-start: -14px;"
+      aria-label="Toggle sidebar navigation"
+    >
+      <svg cIcon name="cilMenu" size="lg"></svg>
+    </button>
+    <c-header-nav class="d-none d-md-flex">
+      <c-nav-item>
+        <a cNavLink routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      </c-nav-item>
+      <c-nav-item>
+        <a cNavLink routerLink="/user/edit-profile" routerLinkActive="active">Users</a>
+      </c-nav-item>
+      <c-nav-item>
+        <a cNavLink routerLink="/user/settings" routerLinkActive="active">Settings</a>
+      </c-nav-item>
+    </c-header-nav>
+    <c-header-nav class="d-none d-md-flex ms-auto ">
+      <a cNavLink>
+        <svg cIcon class="my-1" name="cilBell" size="lg"></svg>
+      </a>
+      <a cNavLink>
+        <svg cIcon class="my-1" name="cilList" size="lg"></svg>
+      </a>
+      <a cNavLink>
+        <svg cIcon class="my-1" name="cilEnvelopeOpen" size="lg"></svg>
+      </a>
+    </c-header-nav>
+
+    <c-header-nav class="ms-auto ms-md-0">
+      <div class="nav-item py-1">
+        <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+      </div>
+      <ng-container *ngTemplateOutlet="themeDropdown" />
+      <div class="nav-item py-1">
+        <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+      </div>
+    </c-header-nav>
+
+    <c-header-nav class="mx-0">
+      <ng-container *ngTemplateOutlet="userDropdown" />
+    </c-header-nav>
+
+  </c-container>
+</ng-container>
+<!--</c-header>-->
+<ng-template #userDropdown>
+  <c-dropdown [popperOptions]="{ placement: 'bottom-start' }" variant="nav-item">
+    <button [caret]="false" cDropdownToggle class="py-0 pe-0" aria-label="Open user menu">
+      <c-avatar
+        shape="rounded-1"
+        size="md"
+        src="{{ (authUser?.profilePhoto ? authUser?.profilePhoto : defaultProfilePhotoUrl) }}"
+        status="success"
+        textColor="primary"
+        alt="User avatar"
+      />
+    </button>
+    <ul cDropdownMenu class="pt-0 w-auto">
+      <li>
+        <h6 cDropdownHeader class="bg-body-secondary text-body-secondary fw-semibold py-2 rounded-top">
+          Account : {{ authUser?.firstName }} {{ authUser?.lastName }}
+        </h6>
+      </li>
+
+      <li>
+        <a cDropdownItem routerLink="/apps/email/inbox">
+          <svg cIcon class="me-2" name="cilEnvelopeOpen"></svg>
+          Messages
+          <c-badge class="ms-2 float-end" color="success">
+            42
+          </c-badge>
+        </a>
+      </li>
+      <li>
+        <a cDropdownItem routerLink="">
+          <svg cIcon class="me-2" name="cilTask"></svg>
+          Posts
+          <c-badge class="ms-2 float-end" color="danger"> 42</c-badge>
+        </a>
+      </li>
+
+      <li>
+        <h6 cDropdownHeader class="bg-body-secondary text-body-secondary fw-semibold py-2">
+          Settings
+        </h6>
+      </li>
+      <li></li>
+      <li>
+        <a cDropdownItem routerLink="/user/edit-profile" routerLinkActive="active">
+          <svg cIcon class="me-2" name="cilUser"></svg>
+          Profile
+        </a>
+      </li>
+      <li>
+        <a cDropdownItem routerLink="/user/settings" routerLinkActive="active">
+          <svg cIcon class="me-2" name="cilSettings"></svg>
+          Settings
+        </a>
+      </li>
+
+      <li>
+        <hr cDropdownDivider />
+      </li>
+      <li>
+        <a cDropdownItem routerLink="" (click)="handleLogout()">
+          <svg cIcon class="me-2" name="cilAccountLogout"></svg>
+          Logout
+        </a>
+      </li>
+    </ul>
+  </c-dropdown>
+</ng-template>
+
+<ng-template #themeDropdown>
+  <c-dropdown alignment="end" variant="nav-item">
+    <button [caret]="false" cDropdownToggle aria-label="Open theme picker">
+      <svg cIcon [name]="icons()" size="lg"></svg>
+    </button>
+    <div cDropdownMenu>
+      @for (mode of colorModes; track mode.name) {
+        <button
+          (click)="colorMode.set(mode.name)"
+          [active]="colorMode()===mode.name"
+          cDropdownItem
+          class="d-flex align-items-center"
+        >
+          <svg cIcon class="me-2" [name]="mode.icon" size="lg"></svg>
+          {{ mode.text }}
+        </button>
+      }
+    </div>
+  </c-dropdown>
+</ng-template>
+
+
+
+<!-- <mat-toolbar color="primary" class="position-fixed top-0 mat-elevation-z3 p-4" style="z-index: 999;">
+	<a href="/" class="text-white text-decoration-none">Social App</a>
+
+	<span class="example-spacer"></span>
+
+
+
+	<a mat-raised-button class="me-3" *ngIf="!isUserLoggedIn" href="/login">Login</a>
+	<a mat-raised-button *ngIf="!isUserLoggedIn" href="/signup">Signup</a>
+
+	<div *ngIf="isUserLoggedIn">
+		<button mat-icon-button (click)="openSearchDialog()">
+			<mat-icon>search</mat-icon>
+		</button>
+
+		<button mat-icon-button [matMenuTriggerFor]="notificationMenu" (click)="handleUnseenNotifications()">
+			<mat-icon>notifications</mat-icon>
+			<span class="position-absolute translate-middle p-2 bg-danger rounded-circle" style="top: 10px; right: -5px;" *ngIf="hasUnseenNotification"></span>
+		</button>
+		<mat-menu #notificationMenu="matMenu" xPosition="before">
+			<h2 class="mat-h2 m-0 text-center" style="padding: 12px 36px" *ngIf="notifications.length <= 0" (click)="$event.stopPropagation();">No Notification</h2>
+			<h2 class="mat-h2 m-0 text-center" style="padding: 12px 20px 20px 20px;" *ngIf="notifications.length > 0" (click)="$event.stopPropagation();">Notifications</h2>
+
+			<a mat-menu-item *ngFor="let notification of notifications; let last = last;"
+			 href="/posts/{{ notification.owningPost.id }}"
+			 class="border border-1 border-start-0 border-end-0"
+			 [ngClass]="last ? '' : 'border-bottom-0'"
+			 style="height: auto; line-height: 1.6; white-space: normal; font-size: 14px; padding: 16px 20px;">
+			 	<mat-icon color="primary" style="margin-right: 5px;" *ngIf="notification.type === 'POST_LIKE' || notification.type === 'COMMENT_LIKE'">favorite</mat-icon>
+			 	<mat-icon color="primary" style="margin-right: 5px;" *ngIf="notification.type === 'POST_COMMENT'">comment</mat-icon>
+			 	<mat-icon color="primary" style="margin-right: 5px;" *ngIf="notification.type === 'POST_SHARE'">share</mat-icon>
+
+			 	<span class="fw-500" *ngIf="notification.sender">{{ notification.sender.firstName + ' ' + notification.sender.lastName }}</span>
+			 	<span class="fw-500 text-danger" *ngIf="!notification.sender">An App User</span>
+
+				<span *ngIf="notification.type === 'POST_LIKE'">
+					<span *ngIf="notification.owningPost.likeCount > 1">
+						and
+						<span class="fw-500">
+							{{ notification.owningPost.likeCount - 1 }}
+							other
+						</span>
+					</span>
+					 liked your
+					<span *ngIf="notification.owningPost.content">
+						post "{{ notification.owningPost.content | slice:0:44 }}..."
+					</span>
+					<span *ngIf="!notification.owningPost.content">
+						photo
+					</span>
+				</span>
+
+				<span *ngIf="notification.type === 'POST_COMMENT'">
+					<span *ngIf="notification.owningPost.commentCount > 1">
+						and
+						<span class="fw-500">
+							{{ notification.owningPost.commentCount - 1 }}
+							other
+						</span>
+					</span>
+					commented on your
+					<span *ngIf="notification.owningPost.content">
+						post "{{ notification.owningPost.content | slice:0:24 }}..."
+					</span>
+					<span *ngIf="!notification.owningPost.content">
+						photo
+					</span>
+				</span>
+
+				<span *ngIf="notification.type === 'POST_SHARE'">
+					<span *ngIf="notification.owningPost.shareCount > 1">
+						and
+						<span class="fw-500">
+							{{ notification.owningPost.shareCount - 1 }}
+							other
+						</span>
+					</span>
+					shared your
+					<span *ngIf="notification.owningPost.content">
+						post "{{ notification.owningPost.content | slice:0:24 }}..."
+					</span>
+					<span *ngIf="!notification.owningPost.content">
+						photo
+					</span>
+				</span>
+
+				<span *ngIf="notification.type === 'COMMENT_LIKE'">
+					<span *ngIf="notification.owningComment.likeCount > 1">
+						and
+						<span class="fw-500">
+						{{ notification.owningComment.likeCount - 1	 }}
+							other
+						</span>
+					</span>
+					liked your comment "{{ notification.owningComment.content | slice:0:24 }}..."
+				</span>
+			</a>
+
+			<div (click)="$event.stopPropagation()" class="position-relative ps-3 pe-3">
+				<div class="text-center" *ngIf="hasMoreNotifications" style="margin: 20px 12px 12px 12px;">
+					<button mat-raised-button color="primary" class="rounded-pill align-middle" *ngIf="hasMoreNotifications && !(fetchingResult && resultPage > 1)" (click)="loadNotifications(resultPage)">Load More</button>
+					<div *ngIf="fetchingResult && resultPage > 1" class="d-inline-block" style="margin-top: 3px;">
+						<mat-spinner style="zoom: 0.3; margin: 0 auto;"></mat-spinner>
+					</div>
+				</div>
+			</div>
+		</mat-menu>
+
+		<button mat-icon-button [matMenuTriggerFor]="mainMenu">
+			<mat-icon>more_vert</mat-icon>
+		</button>
+		<mat-menu #mainMenu="matMenu" xPosition="before">
+
+			<a mat-menu-item href="/logout">Logout</a>
+		</mat-menu>
+	</div>
+</mat-toolbar> -->

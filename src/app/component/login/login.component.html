@@ -1,0 +1,90 @@
+<div class="auth-container">
+  <div class="auth-background">
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+  </div>
+  <div class="auth-card">
+    <div class="auth-header">
+      <h1 class="auth-title">{{ isLogin() ? 'Welcome to RSIComelit' : 'Create Account' }}</h1>
+      <p class="auth-subtitle">
+        {{ isLogin() ? 'Sign in to your account to continue' : 'Join us and start your journey today' }}
+      </p>
+    </div>
+
+    <div class="divider">
+      <img alt="RSIComelit Logo" class="logo" src="https://pro.comelitgroup.com/images/logo-fr.svg"/>
+    </div>
+    <!-- Login Form -->
+    <form (ngSubmit)="onLogin()" *ngIf="isLogin()" class="auth-form">
+      <div class="form-group">
+        <input
+          [(ngModel)]="loginData.email"
+          class="form-input"
+          id="login-email"
+          name="loginEmail"
+          placeholder=" "
+          required
+          type="email"
+        />
+        <label class="form-label" for="login-email">Email Address</label>
+      </div>
+
+      <div class="form-group">
+        <input
+          [(ngModel)]="loginData.password"
+          [type]="showPassword() ? 'text' : 'password'"
+          class="form-input"
+          id="login-password"
+          name="loginPassword"
+          placeholder=" "
+          required
+        />
+        <label class="form-label" for="login-password">Password</label>
+        <button
+          (click)="togglePasswordVisibility()"
+          class="password-toggle"
+          type="button"
+        >
+          <svg *ngIf="!showPassword()" class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <svg *ngIf="showPassword()" class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+            <line x1="1" x2="23" y1="1" y2="23"></line>
+          </svg>
+        </button>
+      </div>
+
+
+      <button class="auth-btn primary-btn" type="submit">
+        Sign In
+      </button>
+
+      <!-- Toast (fixed on screen) -->
+      <div *ngIf="message" [ngClass]="{ 'success': isSuccess, 'error': !isSuccess }" class="toast">
+        {{ message }}
+      </div>
+
+
+    </form>
+
+    <!-- Toggle Mode -->
+    <div class="auth-footer">
+      <span class="toggle-text">
+        {{ isLogin() ? "Don’t have an account? Please contact your administrator." : "" }}
+        <button (click)="toggleMode()" class="toggle-btn" type="button">
+          {{ isLogin() ? '' : 'Sign In' }}
+        </button>
+      </span>
+      <a (click)="openForgotPasswordDialog($event)"
+         class="d-inline-block text-secondary text-decoration-none cursor-pointer mt-3">
+					Forgot Password?
+				</a>
+    </div>
+  </div>
+</div>

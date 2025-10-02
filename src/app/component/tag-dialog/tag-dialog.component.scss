@@ -1,0 +1,67 @@
+// Enhanced modal dialog UI/UX
+.modal-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #4f8cff;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.2rem;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(79,140,255,0.08);
+}
+
+mat-dialog-content {
+  padding: 2.2rem 2rem 2rem 2rem !important;
+  background: #f8faff;
+  border-radius: 18px;
+  min-width: 340px;
+  box-shadow: 0 4px 32px rgba(79,140,255,0.10);
+}
+
+.divider {
+  border: none;
+  border-top: 2px solid #e3eafc;
+  margin: 1.2rem 0 1.5rem 0;
+}
+
+form {
+  margin-top: 1.2rem;
+}
+
+mat-form-field {
+  margin-bottom: 1.2rem;
+}
+
+.modal-btn {
+  padding: 0.6rem 2.2rem;
+  border-radius: 20px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, #4f8cff 0%, #6dd5ed 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(79,140,255,0.13);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  margin: 0.5rem auto 0 auto;
+  display: block;
+  outline: none;
+}
+
+.modal-btn:hover, .modal-btn:focus {
+  background: linear-gradient(90deg, #3578e5 0%, #43cea2 100%);
+  box-shadow: 0 4px 16px rgba(79,140,255,0.22);
+  transform: translateY(-2px) scale(1.04);
+  color: #fff;
+}
+
+.modal-btn:active {
+  background: linear-gradient(90deg, #3578e5 0%, #43cea2 100%);
+  box-shadow: 0 2px 8px rgba(79,140,255,0.15);
+  transform: scale(0.98);
+}
+
+mat-error {
+  color: #e53935;
+  font-size: 0.95em;
+  margin-top: 0.2em;
+  text-align: left;
+}

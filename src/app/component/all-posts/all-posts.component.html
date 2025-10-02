@@ -1,0 +1,16 @@
+<div class="col-6 mb-4">
+  <div class="profile-posts">
+    @if (profileUserPostResponses.length === 0) {
+      <mat-card class="mat-elevation-z2 text-center p-5">
+        <div>Aucun post à afficher.</div>
+      </mat-card>
+    } @else {
+      @for (postResponse of profileUserPostResponses; track postResponse.post.id) {
+        <app-post id="{{'profilePost' + postResponse.post.id}}"
+                  [postResponse]="postResponse" [isDetailedPost]="false"
+                  (postDeletedEvent)="handlePostDeletedEvent($event)">
+        </app-post>
+      }
+    }
+  </div>
+</div>

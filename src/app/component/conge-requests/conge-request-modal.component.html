@@ -1,0 +1,69 @@
+<h2 class="centered-title"
+    mat-dialog-title>{{ data.mode === 'create' ? 'Create a leave request' : 'Edit leave request' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <div class="dates-row">
+      <mat-form-field>
+        <mat-label>Start date</mat-label>
+        <input formControlName="startDate" matInput type="date">
+        @if (form.get('startDate')?.touched && form.get('startDate')?.hasError('required')) {
+          <mat-error>
+            Start date is required
+          </mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>End date</mat-label>
+        <input formControlName="endDate" matInput type="date">
+        @if (form.get('endDate')?.touched && form.get('endDate')?.hasError('required')) {
+          <mat-error>
+            End date is required
+          </mat-error>
+        }
+        @if (form.get('endDate')?.touched && form.get('endDate')?.hasError('dateInvalid')) {
+          <mat-error>
+            End date must be greater than or equal to start date
+          </mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <mat-form-field class="full-width-field">
+      <mat-label>Validator</mat-label>
+      <input formControlName="validatorSearch"
+             [matAutocomplete]="auto"
+             matInput
+             placeholder="Search for a user">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectValidateur($event)">
+        @if (isLoadingValidator) {
+          <mat-option disabled>Searching...</mat-option>
+        }
+        @for (user of validatorOptions; track user.id) {
+          <mat-option [value]="user.id">
+            {{ user.firstName }} {{ user.lastName }}
+          </mat-option>
+        }
+      </mat-autocomplete>
+      @if (form.get('validatorId')?.touched && form.get('validatorId')?.hasError('required')) {
+        <mat-error>
+          Validator is required
+        </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field class="full-width-field">
+      <mat-label>Reason</mat-label>
+      <textarea formControlName="reason" matInput></textarea>
+      @if (form.get('reason')?.touched && form.get('reason')?.hasError('required')) {
+        <mat-error>
+          Reason is required
+        </mat-error>
+      }
+    </mat-form-field>
+    @if (errorMessage) {
+      <div class="error-message">{{ errorMessage }}</div>
+    }
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button (click)="close()" mat-button>Cancel</button>
+  <button (click)="save()" [disabled]="form.invalid" color="primary" mat-raised-button>Save</button>
+</mat-dialog-actions>

@@ -1,0 +1,129 @@
+:host ::ng-deep {
+  .mat-mdc-dialog-container {
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    background: #f9fafb;
+  }
+}
+
+.justification-content {
+  padding: 0;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  color: white;
+  margin-bottom: 1.5rem;
+
+  .modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .close-btn {
+    color: white;
+  }
+}
+
+.absence-info, .justification-details, .attached-file {
+  margin: 0 2rem 1.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f5f9;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .label {
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .value {
+    font-weight: 500;
+    color: #1e293b;
+  }
+}
+
+.justification-text {
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 12px;
+  border-left: 4px solid #2563eb;
+  margin: 0;
+  line-height: 1.6;
+  color: #334155;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .file-icon {
+    font-size: 2rem;
+    color: #2563eb;
+  }
+
+  .file-details {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .file-name {
+      font-weight: 500;
+      color: #1e293b;
+    }
+
+    .download-btn {
+      background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+      color: white;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+  }
+}
+
+.modal-actions {
+  padding: 1.5rem 2rem 2rem 2rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  .cancel-btn {
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+  }
+
+  .validate-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border-radius: 14px;
+    font-weight: 600;
+
+    &:hover {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+    }
+  }
+}

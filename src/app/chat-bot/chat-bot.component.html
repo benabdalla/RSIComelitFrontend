@@ -1,0 +1,76 @@
+<!-- Modern Chatbot -->
+<!-- Floating launcher button -->
+<button class="modern-bot-launcher" (click)="open()">
+  <div class="launcher-icon">
+    <i class="bx bx-message-rounded-dots"></i>
+  </div>
+  <div class="launcher-pulse"></div>
+</button>
+
+<!-- Modern slide-in panel -->
+<div class="modern-bot-panel" [class.open]="opened">
+  <!-- Bot Header -->
+  <div class="modern-bot-header">
+    <div class="header-content">
+      <div class="bot-avatar">
+        <i class="bx bx-bot"></i>
+      </div>
+      <div class="bot-info">
+        <h4 class="bot-name">Assistant IA</h4>
+        <span class="bot-status">En ligne</span>
+      </div>
+    </div>
+    <button class="modern-bot-close" (click)="close()">
+      <i class="bx bx-x"></i>
+    </button>
+  </div>
+
+  <!-- Messages Container -->
+  <div class="modern-bot-messages" #scrollBox>
+    <div class="welcome-message" *ngIf="messages.length === 0">
+      <div class="welcome-icon">
+        <i class="bx bx-chat"></i>
+      </div>
+      <h5>Bonjour ! 👋</h5>
+      <p>Comment puis-je vous aider aujourd'hui ?</p>
+    </div>
+
+    <div *ngFor="let msg of messages" class="message-wrapper">
+      <div class="message" [ngClass]="{'user-message': msg.sender === 'You', 'bot-message': msg.sender !== 'You'}">
+        <div class="message-avatar" *ngIf="msg.sender !== 'You'">
+          <i class="bx bx-bot"></i>
+        </div>
+        <div class="message-content">
+          <div class="message-bubble">
+            <p>{{ msg.text }}</p>
+          </div>
+          <span class="message-time">{{ getCurrentTime() }}</span>
+        </div>
+        <div class="message-avatar user-avatar" *ngIf="msg.sender === 'You'">
+          <i class="bx bx-user"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input Form -->
+  <div class="modern-bot-form">
+    <form (ngSubmit)="send()" class="input-form">
+      <div class="input-container">
+        <input
+          type="text"
+          [(ngModel)]="draft"
+          name="draft"
+          placeholder="Tapez votre message..."
+          class="message-input"
+          required>
+<button type="submit" class="send-button" [disabled]="!draft.trim()">
+          <i class="bx bx-send"></i>
+        </button>
+      </div>
+    </form>
+    <div class="form-footer">
+      <span class="powered-by">Propulsé par IA</span>
+    </div>
+  </div>
+</div>

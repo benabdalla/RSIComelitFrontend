@@ -1,0 +1,82 @@
+<div mat-dialog-content class="justification-content">
+  <div class="modal-header">
+    <h2 class="modal-title">
+      <mat-icon>description</mat-icon>
+      Absence Justification
+    </h2>
+    <button mat-icon-button (click)="onClose()" class="close-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-card class="absence-info">
+    <mat-card-content>
+      <div class="info-row">
+        <span class="label">Employee:</span>
+        <span class="value">{{ absence.firstName }} {{ absence.lastName }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Email:</span>
+        <span class="value">{{ absence.email }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Absence Date:</span>
+        <span class="value">{{ absence.date | date:'fullDate' }}</span>
+      </div>
+      <div class="info-row" *ngIf="absence.submittedAt">
+        <span class="label">Submitted:</span>
+        <span class="value">{{ absence.submittedAt | date:'short' }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Status:</span>
+        <span class="value status-badge" [ngClass]="absence.status.toLowerCase().replace(' ', '-')">
+          {{ absence.status }}
+        </span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="justification-details" *ngIf="absence.justificationText">
+    <mat-card-header>
+      <mat-card-title>Justification Text</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="justification-text">{{ absence.justificationText }}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="attached-file" *ngIf="absence.justificationFile">
+    <mat-card-header>
+      <mat-card-title>Attached Document</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="file-info">
+        <mat-icon class="file-icon">attach_file</mat-icon>
+        <div class="file-details">
+          <span class="file-name">{{ absence.justificationFile }}</span>
+          <button mat-raised-button color="primary" (click)="downloadFile()" class="download-btn">
+            <mat-icon>download</mat-icon>
+            Download
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div mat-dialog-actions class="modal-actions">
+  <button mat-button (click)="onClose()" class="cancel-btn">
+    Close
+  </button>
+  <button
+    mat-raised-button
+    color="accent"
+    *ngIf="canValidate()"
+    (click)="onValidate()"
+    class="validate-btn">
+    <mat-icon>check_circle</mat-icon>
+    Validate Justification
+  </button>
+</div>
+
+

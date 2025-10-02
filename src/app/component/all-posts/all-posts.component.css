@@ -1,0 +1,32 @@
+/* center the whole component host */
+:host {
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: flex-start; /* start from top vertically */
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px;
+}
+
+/* constrain the column and keep it centered */
+:host .col-6 {
+  width: 100%;
+  max-width: 720px; /* adjust as needed */
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* stack posts vertically and center each post */
+:host .profile-posts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* make each app-post take the available column width */
+:host app-post {
+  width: 100%;
+}

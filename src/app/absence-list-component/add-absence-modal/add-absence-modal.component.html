@@ -1,0 +1,94 @@
+<div mat-dialog-content class="modal-content">
+  <div class="modal-header">
+    <mat-icon class="header-icon">person_add_disabled</mat-icon>
+    <h2 class="modal-title">Add New Absence</h2>
+  </div>
+
+  <div class="today-date-card">
+    <div class="date-icon-wrapper">
+      <mat-icon class="calendar-icon">event</mat-icon>
+    </div>
+    <div class="date-details">
+      <span class="date-label">Today's Date</span>
+      <h3 class="current-date">{{ currentDate | date:'EEEE, MMMM d, y' }}</h3>
+      <span class="current-time">{{ currentDate | date:'shortTime' }}</span>
+    </div>
+    <div class="today-badge">
+      TODAY
+    </div>
+  </div>
+
+  <div class="user-selection">
+    <h4 class="selection-title">
+      <mat-icon>people</mat-icon>
+      Select Employee to Mark Absent
+    </h4>
+
+    <mat-form-field appearance="outline" class="user-select">
+      <mat-label>Choose an employee</mat-label>
+      <mat-select [(value)]="selectedUser" placeholder="Select from employee list">
+        <mat-option *ngFor="let user of users" [value]="user" class="user-option">
+          <div class="user-item">
+            <div class="user-avatar">
+              {{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}
+            </div>
+            <div class="user-info">
+              <div class="user-name">{{ user.firstName }} {{ user.lastName }}</div>
+              <div class="user-email">{{ user.email }}</div>
+              <div class="user-department" *ngIf="user.department">{{ user.department }}</div>
+            </div>
+          </div>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Selected User Preview -->
+    <div class="selected-preview" *ngIf="selectedUser">
+      <div class="preview-header">
+        <mat-icon class="check-icon">check_circle</mat-icon>
+        <span>Selected Employee</span>
+      </div>
+      <div class="selected-user-info">
+        <div class="selected-avatar">
+          {{ selectedUser.firstName.charAt(0) }}{{ selectedUser.lastName.charAt(0) }}
+        </div>
+        <div class="selected-details">
+          <strong>{{ selectedUser.firstName }} {{ selectedUser.lastName }}</strong>
+          <div class="selected-email">{{ selectedUser.email }}</div>
+          <div class="selected-department" *ngIf="selectedUser.department">
+            {{ selectedUser.department }} Department
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employee Count Info -->
+    <div class="employee-count">
+      <mat-icon>info</mat-icon>
+      <span>{{ users.length }} employees available in the system</span>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions class="modal-actions">
+  <div class="action-info" *ngIf="selectedUser">
+    <mat-icon>warning</mat-icon>
+    <span>This will mark <strong>{{ selectedUser.firstName }} {{ selectedUser.lastName }}</strong> as absent for today</span>
+  </div>
+
+  <div class="buttons-container">
+    <button mat-stroked-button (click)="onCancel()" class="cancel-btn">
+      <mat-icon>close</mat-icon>
+      Cancel
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!isSaveEnabled()"
+      (click)="onSave()"
+      class="save-btn">
+      <mat-icon>save</mat-icon>
+      {{ isSaveEnabled() ? 'Record Absence' : 'Please Select Employee' }}
+    </button>
+  </div>
+</div>

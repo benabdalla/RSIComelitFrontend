@@ -1,0 +1,11 @@
+<div class="fab-container" aria-hidden="false" *ngIf="showFab">
+  <!-- optional label shown on wider screens -->
+  <button *ngIf="showFab"
+    class="fab-label"
+    (click)="openPostDialog()"
+    aria-hidden="true"
+    tabindex="-1">
+    <mat-icon class="label-icon">edit</mat-icon>
+    <span class="label-text">Create Post</span>
+  </button>
+</div>

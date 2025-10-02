@@ -1,0 +1,137 @@
+body {
+	background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%) !important;
+}
+
+.container {
+	max-width: 900px;
+}
+
+.bg-white.mat-elevation-z3.rounded {
+	background: linear-gradient(135deg, #fff 60%, #f0f4fa 100%);
+	border-radius: 18px;
+	box-shadow: 0 4px 24px 0 rgba(60, 72, 88, 0.10), 0 1.5px 4px 0 rgba(60, 72, 88, 0.08);
+	padding: 2.5rem 2.2rem 2rem 2.2rem;
+	margin-bottom: 2rem;
+	transition: box-shadow 0.2s;
+}
+
+mat-tab-group {
+	background: transparent !important;
+	border-radius: 18px;
+	box-shadow: none !important;
+}
+mat-tab-header {
+	border-bottom: 1px solid #e3e8f0 !important;
+	border-radius: 18px 18px 0 0;
+	background: #f8fafc !important;
+}
+mat-tab-label {
+	font-size: 1.1rem !important;
+	font-weight: 600 !important;
+	color: #1976d2 !important;
+	padding: 1.1rem 2.2rem !important;
+	border-radius: 18px 18px 0 0;
+	margin-right: 0.5rem;
+	transition: background 0.2s, color 0.2s;
+}
+mat-tab-label.mat-tab-label-active {
+	background: linear-gradient(90deg, #1976d2 0%, #42a5f5 100%) !important;
+	color: #fff !important;
+}
+
+.p-5 {
+	padding: 2.2rem !important;
+}
+
+mat-form-field {
+	margin-bottom: 1.2rem !important;
+}
+mat-form-field.mat-form-field {
+	width: 100% !important;
+}
+mat-form-field.mat-form-field-appearance-outline .mat-form-field-outline {
+	color: #1976d2 !important;
+}
+mat-form-field .mat-form-field-label {
+	color: #1976d2 !important;
+	font-weight: 500 !important;
+}
+mat-form-field .mat-input-element {
+	font-size: 1.05rem !important;
+	color: #374151 !important;
+}
+
+mat-error {
+	color: #e53935 !important;
+	font-size: 0.98rem !important;
+	font-weight: 500 !important;
+	margin-top: 0.2rem;
+}
+
+mat-radio-group {
+	margin-bottom: 1.2rem !important;
+}
+mat-radio-button {
+	margin-right: 1.5rem !important;
+	font-size: 1.05rem !important;
+	color: #1976d2 !important;
+}
+
+mat-card-actions {
+	margin-top: 1.5rem !important;
+	display: flex;
+	justify-content: flex-end;
+}
+button[mat-raised-button] {
+	font-size: 1.1rem !important;
+	padding: 0.7em 2.2em !important;
+	border-radius: 2em !important;
+	font-weight: 600 !important;
+	box-shadow: 0 2px 8px 0 rgba(25, 118, 210, 0.10);
+	background: linear-gradient(90deg, #1976d2 0%, #42a5f5 100%) !important;
+	color: #fff !important;
+	transition: background 0.2s, box-shadow 0.2s;
+}
+button[mat-raised-button]:hover {
+	background: linear-gradient(90deg, #1565c0 0%, #1976d2 100%) !important;
+	color: #fff !important;
+	box-shadow: 0 4px 16px 0 rgba(25, 118, 210, 0.18);
+}
+
+mat-progress-bar {
+	margin-top: 1.5rem !important;
+	border-radius: 8px !important;
+	height: 8px !important;
+	background: #e3e8f0 !important;
+}
+
+@media (max-width: 991px) {
+	.container {
+		max-width: 98vw;
+		padding: 0 0.5rem;
+	}
+	.bg-white.mat-elevation-z3.rounded {
+		padding: 1.2rem 0.7rem 1rem 0.7rem;
+	}
+	.p-5 {
+		padding: 1.2rem !important;
+	}
+}
+
+@media (max-width: 767px) {
+	.bg-white.mat-elevation-z3.rounded {
+		padding: 0.7rem 0.3rem 0.5rem 0.3rem;
+		border-radius: 10px;
+	}
+	.p-5 {
+		padding: 0.7rem !important;
+	}
+	mat-tab-label {
+		font-size: 1rem !important;
+		padding: 0.7rem 1.2rem !important;
+	}
+	button[mat-raised-button] {
+		font-size: 1rem !important;
+		padding: 0.6em 1.2em !important;
+	}
+}
