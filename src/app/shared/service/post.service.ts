@@ -45,7 +45,7 @@ export class PostService {
 
   getAllPosts(page: number, size: number): Observable<PostResponse[] | HttpErrorResponse> {
     const reqParams = new HttpParams().set('page', String(page)).set('size', String(size));
-    return this.httpClient.get<PostResponse[] | HttpErrorResponse>(`${this.host}/Allposts`, {params: reqParams,});
+    return this.httpClient.get<PostResponse[] | HttpErrorResponse>(`${this.host}/posts/all`, {params: reqParams,});
   }
 
 	getPostById(postId: number): Observable<PostResponse | HttpErrorResponse> {

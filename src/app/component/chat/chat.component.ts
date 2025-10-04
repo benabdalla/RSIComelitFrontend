@@ -1,11 +1,11 @@
-import {Component, ElementRef, OnInit, ViewChild, OnDestroy} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
 import {MessageService} from '../../shared/service/message.service';
 import {Message} from '../../shared/model/message.model';
 import {UserService} from '../../shared/service/user.service';
 import {UserChat} from '../../shared/model/user';
-import {ChatService} from '../../shared/service/chat.service';
+import {ChatNotificationRealtimeService} from '../../shared/service/chat-notification-realtime.service';
 import {AuthService} from '../../shared/service/auth.service';
 
 @Component({
@@ -32,7 +32,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   private wsConnected = false;
 
   constructor(private readonly messageService: MessageService,
-              private readonly chatService: ChatService,
+              private readonly chatService: ChatNotificationRealtimeService,
               private readonly authService: AuthService,
               private readonly userService: UserService) {
   }

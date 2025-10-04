@@ -22,15 +22,41 @@
         <a cNavLink routerLink="/user/settings" routerLinkActive="active">Settings</a>
       </c-nav-item>
     </c-header-nav>
-    <c-header-nav class="d-none d-md-flex ms-auto ">
-      <a cNavLink>
-        <svg cIcon class="my-1" name="cilBell" size="lg"></svg>
-      </a>
+    <c-header-nav (click)="onNotificationsClick()" class="d-none d-md-flex ms-auto">
+      <div class="position-relative">
+        <c-dropdown [popperOptions]="{ placement: 'bottom-end' }" variant="nav-item">
+          <button (click)="handleUnseenNotifications()" [caret]="false" aria-label="Ouvrir les notifications"
+                  cDropdownToggle class="d-flex flex-column align-items-center">
+            <svg cIcon class="my-1" name="cilBell" size="lg"></svg>
+            <ng-container *ngIf="notifications$ | async as notifis">
+              <c-badge class="ms-2" color="danger">{{ notifis }}</c-badge>
+            </ng-container>
+          </button>
+          <ul cDropdownMenu class="p-2 shadow end-0 mt-2"
+              style="min-width: 320px; max-height: 400px; overflow-y: auto; z-index: 1050;">
+            <li>
+              <h6 cDropdownHeader>Notifications</h6>
+            </li>
+            <ng-container *ngIf="notifications.length > 0; else noNotif">
+              <li *ngFor="let notif of notifications" [class.fw-bold]="!notif.isSeen" class="dropdown-item">
+                <span>{{ notif.type }}</span>
+                <div class="small text-muted">{{ notif.dateCreated | date:'short' }}</div>
+              </li>
+            </ng-container>
+            <ng-template #noNotif>
+              <li class="dropdown-item text-center text-muted">Aucune notification</li>
+            </ng-template>
+          </ul>
+        </c-dropdown>
+      </div>
       <a cNavLink>
         <svg cIcon class="my-1" name="cilList" size="lg"></svg>
       </a>
-      <a cNavLink>
+      <a (click)="onMessageClick()" cNavLink class="d-flex flex-column align-items-center">
         <svg cIcon class="my-1" name="cilEnvelopeOpen" size="lg"></svg>
+        <ng-container *ngIf="messages$ | async as messages">
+          <c-badge class="ms-2 " color="success"> {{ messages }}</c-badge>
+        </ng-container>
       </a>
     </c-header-nav>
 
@@ -71,7 +97,7 @@
       </li>
 
       <li>
-        <a cDropdownItem routerLink="/apps/email/inbox">
+        <a cDropdownItem routerLink="/user/chat">
           <svg cIcon class="me-2" name="cilEnvelopeOpen"></svg>
           Messages
           <c-badge class="ms-2 float-end" color="success">
@@ -80,7 +106,7 @@
         </a>
       </li>
       <li>
-        <a cDropdownItem routerLink="">
+        <a cDropdownItem routerLink="/user/timeline">
           <svg cIcon class="me-2" name="cilTask"></svg>
           Posts
           <c-badge class="ms-2 float-end" color="danger"> 42</c-badge>
@@ -139,123 +165,3 @@
     </div>
   </c-dropdown>
 </ng-template>
-
-
-
-<!-- <mat-toolbar color="primary" class="position-fixed top-0 mat-elevation-z3 p-4" style="z-index: 999;">
-	<a href="/" class="text-white text-decoration-none">Social App</a>
-
-	<span class="example-spacer"></span>
-
-
-
-	<a mat-raised-button class="me-3" *ngIf="!isUserLoggedIn" href="/login">Login</a>
-	<a mat-raised-button *ngIf="!isUserLoggedIn" href="/signup">Signup</a>
-
-	<div *ngIf="isUserLoggedIn">
-		<button mat-icon-button (click)="openSearchDialog()">
-			<mat-icon>search</mat-icon>
-		</button>
-
-		<button mat-icon-button [matMenuTriggerFor]="notificationMenu" (click)="handleUnseenNotifications()">
-			<mat-icon>notifications</mat-icon>
-			<span class="position-absolute translate-middle p-2 bg-danger rounded-circle" style="top: 10px; right: -5px;" *ngIf="hasUnseenNotification"></span>
-		</button>
-		<mat-menu #notificationMenu="matMenu" xPosition="before">
-			<h2 class="mat-h2 m-0 text-center" style="padding: 12px 36px" *ngIf="notifications.length <= 0" (click)="$event.stopPropagation();">No Notification</h2>
-			<h2 class="mat-h2 m-0 text-center" style="padding: 12px 20px 20px 20px;" *ngIf="notifications.length > 0" (click)="$event.stopPropagation();">Notifications</h2>
-
-			<a mat-menu-item *ngFor="let notification of notifications; let last = last;"
-			 href="/posts/{{ notification.owningPost.id }}"
-			 class="border border-1 border-start-0 border-end-0"
-			 [ngClass]="last ? '' : 'border-bottom-0'"
-			 style="height: auto; line-height: 1.6; white-space: normal; font-size: 14px; padding: 16px 20px;">
-			 	<mat-icon color="primary" style="margin-right: 5px;" *ngIf="notification.type === 'POST_LIKE' || notification.type === 'COMMENT_LIKE'">favorite</mat-icon>
-			 	<mat-icon color="primary" style="margin-right: 5px;" *ngIf="notification.type === 'POST_COMMENT'">comment</mat-icon>
-			 	<mat-icon color="primary" style="margin-right: 5px;" *ngIf="notification.type === 'POST_SHARE'">share</mat-icon>
-
-			 	<span class="fw-500" *ngIf="notification.sender">{{ notification.sender.firstName + ' ' + notification.sender.lastName }}</span>
-			 	<span class="fw-500 text-danger" *ngIf="!notification.sender">An App User</span>
-
-				<span *ngIf="notification.type === 'POST_LIKE'">
-					<span *ngIf="notification.owningPost.likeCount > 1">
-						and
-						<span class="fw-500">
-							{{ notification.owningPost.likeCount - 1 }}
-							other
-						</span>
-					</span>
-					 liked your
-					<span *ngIf="notification.owningPost.content">
-						post "{{ notification.owningPost.content | slice:0:44 }}..."
-					</span>
-					<span *ngIf="!notification.owningPost.content">
-						photo
-					</span>
-				</span>
-
-				<span *ngIf="notification.type === 'POST_COMMENT'">
-					<span *ngIf="notification.owningPost.commentCount > 1">
-						and
-						<span class="fw-500">
-							{{ notification.owningPost.commentCount - 1 }}
-							other
-						</span>
-					</span>
-					commented on your
-					<span *ngIf="notification.owningPost.content">
-						post "{{ notification.owningPost.content | slice:0:24 }}..."
-					</span>
-					<span *ngIf="!notification.owningPost.content">
-						photo
-					</span>
-				</span>
-
-				<span *ngIf="notification.type === 'POST_SHARE'">
-					<span *ngIf="notification.owningPost.shareCount > 1">
-						and
-						<span class="fw-500">
-							{{ notification.owningPost.shareCount - 1 }}
-							other
-						</span>
-					</span>
-					shared your
-					<span *ngIf="notification.owningPost.content">
-						post "{{ notification.owningPost.content | slice:0:24 }}..."
-					</span>
-					<span *ngIf="!notification.owningPost.content">
-						photo
-					</span>
-				</span>
-
-				<span *ngIf="notification.type === 'COMMENT_LIKE'">
-					<span *ngIf="notification.owningComment.likeCount > 1">
-						and
-						<span class="fw-500">
-						{{ notification.owningComment.likeCount - 1	 }}
-							other
-						</span>
-					</span>
-					liked your comment "{{ notification.owningComment.content | slice:0:24 }}..."
-				</span>
-			</a>
-
-			<div (click)="$event.stopPropagation()" class="position-relative ps-3 pe-3">
-				<div class="text-center" *ngIf="hasMoreNotifications" style="margin: 20px 12px 12px 12px;">
-					<button mat-raised-button color="primary" class="rounded-pill align-middle" *ngIf="hasMoreNotifications && !(fetchingResult && resultPage > 1)" (click)="loadNotifications(resultPage)">Load More</button>
-					<div *ngIf="fetchingResult && resultPage > 1" class="d-inline-block" style="margin-top: 3px;">
-						<mat-spinner style="zoom: 0.3; margin: 0 auto;"></mat-spinner>
-					</div>
-				</div>
-			</div>
-		</mat-menu>
-
-		<button mat-icon-button [matMenuTriggerFor]="mainMenu">
-			<mat-icon>more_vert</mat-icon>
-		</button>
-		<mat-menu #mainMenu="matMenu" xPosition="before">
-
-			<a mat-menu-item href="/logout">Logout</a>
-		</mat-menu>
-	</div>
-</mat-toolbar> -->

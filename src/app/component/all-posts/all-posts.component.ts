@@ -90,7 +90,7 @@ export class AllPostsComponent implements OnInit, OnDestroy {
       this.fetchingResult = true;
       this.subscriptions.push(
         this.postServive
-          .getAllMyPosts(currentPage, this.resultSize)
+          .getAllPosts(currentPage, this.resultSize)
           .subscribe((response: PostResponse[] | HttpErrorResponse) => {
             if (Array.isArray(response)) {
               response.forEach((post) =>

@@ -4,15 +4,15 @@
 /// <reference types="@angular/localize" />
 import '@angular/localize/init';
 
-import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app/app.component';
-import { appConfig } from './app/app.config';
-import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { ToastrModule } from 'ngx-toastr';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { authInterceptor } from './app/shared/interceptor/auth-interceptor.service';
+import {bootstrapApplication} from '@angular/platform-browser';
+import {AppComponent} from './app/app.component';
+import {appConfig} from './app/app.config';
+import {importProvidersFrom} from '@angular/core';
+import {provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
+import {ToastrModule} from 'ngx-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {authInterceptor} from './app/shared/interceptor/auth-interceptor.service';
 // ...other module imports...
 
 bootstrapApplication(AppComponent, {

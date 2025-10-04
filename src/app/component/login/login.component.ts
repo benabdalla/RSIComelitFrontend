@@ -7,7 +7,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {AuthService} from '../../shared/service/auth.service';
 import {ForgotPasswordDialogComponent} from '../forgot-password-dialog/forgot-password-dialog.component';
 import {AuthResponse} from '../../shared/model/AuthResponse';
-import {ChatService} from '../../shared/service/chat.service';
+import {ChatNotificationRealtimeService} from '../../shared/service/chat-notification-realtime.service';
 
 @Component({
   standalone: true,
@@ -30,7 +30,7 @@ export class LoginComponent {
     private authService: AuthService,
     private toastr: ToastrService,
     private matDialog: MatDialog,
-    private chatService: ChatService
+    private chatService: ChatNotificationRealtimeService
   ) {
   }
 

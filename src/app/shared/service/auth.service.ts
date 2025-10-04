@@ -8,7 +8,7 @@ import {UserLogin} from '../model/user-login';
 import {jwtDecode} from 'jwt-decode';
 import {ResetPassword} from '../model/reset-password';
 import {AuthResponse} from '../model/AuthResponse';
-import {ChatService} from './chat.service';
+import {ChatNotificationRealtimeService} from './chat-notification-realtime.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class AuthService {
   private jwtService = new JwtHelperService();
   private readonly token = 'token';
 
-  constructor(private httpClient: HttpClient, private chatService: ChatService) {
+  constructor(private httpClient: HttpClient, private chatService: ChatNotificationRealtimeService) {
   }
 
 
