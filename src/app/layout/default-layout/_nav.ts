@@ -75,6 +75,12 @@ export const navItemsAdmin: INavData[] = [
     linkProps: {fragment: 'headings'},
     iconComponent: {name: 'cil-pencil'},
   },
+  {
+    name: 'Absences Management',
+    url: '/user/absences',
+    linkProps: {fragment: 'headings'},
+    iconComponent: {name: 'cil-pencil'},
+  },
   ...commonNavItems.slice(1),
 ];
 

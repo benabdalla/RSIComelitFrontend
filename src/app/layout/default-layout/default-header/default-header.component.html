@@ -40,6 +40,7 @@
             <ng-container *ngIf="notifications.length > 0; else noNotif">
               <li *ngFor="let notif of notifications" [class.fw-bold]="!notif.isSeen" class="dropdown-item">
                 <span>{{ notif.type }}</span>
+                <div><span class="fw-semibold">{{ notif.sender.firstName }} {{ notif.sender.lastName }}</span></div>
                 <div class="small text-muted">{{ notif.dateCreated | date:'short' }}</div>
               </li>
             </ng-container>
@@ -100,16 +101,12 @@
         <a cDropdownItem routerLink="/user/chat">
           <svg cIcon class="me-2" name="cilEnvelopeOpen"></svg>
           Messages
-          <c-badge class="ms-2 float-end" color="success">
-            42
-          </c-badge>
         </a>
       </li>
       <li>
         <a cDropdownItem routerLink="/user/timeline">
           <svg cIcon class="me-2" name="cilTask"></svg>
           Posts
-          <c-badge class="ms-2 float-end" color="danger"> 42</c-badge>
         </a>
       </li>
 

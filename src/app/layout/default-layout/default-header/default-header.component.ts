@@ -5,7 +5,7 @@ import {AsyncPipe, DatePipe, NgForOf, NgIf, NgTemplateOutlet} from '@angular/com
 import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {AppConstants} from '../../../common/app-constants';
-import {Notification} from '../../../shared/model/notification';
+import {Notification} from '../../../shared/model/notification.model';
 import {User} from '../../../shared/model/user';
 import {AuthService} from '../../../shared/service/auth.service';
 import {NotificationService} from '../../../shared/service/notification.service';
@@ -118,7 +118,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit, O
   }
 
   onNotificationsClick(): void {
-    this.chatNotificationRealTimeService.initCurrentMessageCount();
+    this.chatNotificationRealTimeService.initCurrentNotificationCount();
     this.getNotifications(1);
     this.notificationService.markAllSeen().subscribe();
   }

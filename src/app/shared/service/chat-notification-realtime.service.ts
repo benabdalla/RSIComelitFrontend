@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {Client, IMessage, StompSubscription} from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {NotificationData} from '../model/notification.model';
+import {Notification, NotificationType} from '../model/notification.model';
 
 @Injectable({
   providedIn: 'root'
@@ -94,7 +94,6 @@ export class ChatNotificationRealtimeService {
     const sub = this.stompClient.subscribe(`/user/${this.userId}/queue/messages`, (message: IMessage) => {
       const msgObj = JSON.parse(message.body);
       this.messageListeners.forEach(listener => listener(msgObj));
-      this.notificationMessageSubject.next(this.notificationMessageSubject.getValue() + 1);
     });
     this.subscriptions.push(sub);
   }
@@ -112,8 +111,12 @@ export class ChatNotificationRealtimeService {
       `/user/${this.userId}/queue/notifications/count`,
       (message) => {
         try {
-          const notificationData: NotificationData = JSON.parse(message.body);
-          this.notificationCountSubject.next(this.notificationCountSubject.getValue() + notificationData.count);
+          const notificationData: Notification = JSON.parse(message.body);
+          if (notificationData.type === NotificationType.MESSAGE) {
+            this.notificationMessageSubject.next(this.notificationMessageSubject.getValue() + 1);
+          } else {
+            this.notificationCountSubject.next(this.notificationCountSubject.getValue() + 1);
+          }
         } catch (error) {
           console.error('Erreur lors du parsing du message de notification:', error);
         }

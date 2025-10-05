@@ -1,31 +1,31 @@
-import { Component, OnInit, ViewChild, HostListener, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule, MatDialog } from '@angular/material/dialog';
-import { MatCardModule } from '@angular/material/card';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
-import { MatSortModule, MatSort } from '@angular/material/sort';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import {ChangeDetectorRef, Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MatCardModule} from '@angular/material/card';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatSort, MatSortModule} from '@angular/material/sort';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
-import { AddAbsenceModalComponent } from './add-absence-modal/add-absence-modal.component';
-import { JustificationModalComponent } from './justification-modal/justification-modal.component';
-import { AbsenceService } from '../../app/shared/service/absence.service';
-import { Absence, AbsenceResponse } from '../../app/shared/model/absence.model';
+import {AddAbsenceModalComponent} from './add-absence-modal/add-absence-modal.component';
+import {JustificationModalComponent} from './justification-modal/justification-modal.component';
+import {AbsenceService} from '../shared/service/absence.service';
+import {Absence, AbsenceResponse} from '../shared/model/absence.model';
 
 @Component({
   selector: 'app-absence-list-component',
