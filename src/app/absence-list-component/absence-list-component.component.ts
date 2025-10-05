@@ -133,8 +133,6 @@ export class AbsenceListComponent implements OnInit {
             date: absence.date, // Keep as string
             status: absence.status || 'NOT_JUSTIFIED'
           }));
-        } else {
-          this.loadMockData();
         }
 
         this.updateFilteredAbsences();
@@ -144,45 +142,8 @@ export class AbsenceListComponent implements OnInit {
         console.error('Error loading absences:', error);
         this.error = 'Failed to load absences. Please try again.';
         this.loading = false;
-        this.loadMockData();
       }
     });
-  }
-
-  private loadMockData(): void {
-    // FIXED: Keep dates as strings
-    this.absences = [
-      {
-        id: 1,
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@company.com',
-        date: '2025-01-15', // String format
-        status: 'NOT_JUSTIFIED',
-        userId: 1
-      },
-      {
-        id: 2,
-        firstName: 'Jane',
-        lastName: 'Smith',
-        email: 'jane.smith@company.com',
-        date: '2025-01-15', // String format
-        status: 'JUSTIFIED',
-        userId: 2,
-        justificationText: 'Medical appointment'
-      },
-      {
-        id: 3,
-        firstName: 'Bob',
-        lastName: 'Johnson',
-        email: 'bob.johnson@company.com',
-        date: '2025-01-14', // String format
-        status: 'VALID',
-        userId: 3,
-        justificationText: 'Family emergency'
-      }
-    ];
-    this.updateFilteredAbsences();
   }
 
   private updateFilteredAbsences(): void {

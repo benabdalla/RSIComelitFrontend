@@ -81,6 +81,10 @@ export class ChatNotificationRealtimeService {
     this.notificationCountSubject.next(0);
   }
 
+  public setCurrentNotificationCount(value: number): void {
+    this.notificationCountSubject.next(value);
+  }
+
   public initCurrentMessageCount(): void {
     this.notificationMessageSubject.next(0);
   }

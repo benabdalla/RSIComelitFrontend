@@ -1,25 +1,26 @@
-import { Component, OnInit, OnDestroy, Inject, Optional } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatDialog, MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatCardModule } from '@angular/material/card';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatListModule } from '@angular/material/list';
-import { MatDividerModule } from '@angular/material/divider';
-import { Subscription, forkJoin } from 'rxjs';
-import { Absence } from '../../shared/model/absence.model';
-import { AbsenceService } from '../../shared/service/absence.service';
+import {Component, Inject, OnDestroy, OnInit, Optional} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatCardModule} from '@angular/material/card';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatListModule} from '@angular/material/list';
+import {MatDividerModule} from '@angular/material/divider';
+import {forkJoin, Subscription} from 'rxjs';
+import {Absence} from '../../shared/model/absence.model';
+import {AbsenceService} from '../../shared/service/absence.service';
+import {Page} from '../../shared/service/page.model';
 
 export interface AbsenceNotification {
   id: string;
@@ -139,7 +140,6 @@ export class AbsenceNotificationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initializeForm();
     this.loadAbsences();
-    this.startNotificationPolling();
   }
 
   ngOnDestroy(): void {
@@ -168,9 +168,8 @@ export class AbsenceNotificationComponent implements OnInit, OnDestroy {
 
     // Use the existing service method
     const subscription = this.absenceService.getAbsencesNeedingJustification().subscribe({
-      next: (absences: Absence[]) => {
-        this.absences = absences;
-        this.generateNotificationsFromAbsences(absences);
+      next: (absences: Page<Absence>) => {
+        this.absences = absences.data;
         this.loading = false;
       },
       error: (error: any) => {
@@ -180,100 +179,10 @@ export class AbsenceNotificationComponent implements OnInit, OnDestroy {
           panelClass: ['warning-snackbar']
         });
         this.loading = false;
-
-        // Fallback to mock data
-        this.loadMockAbsences();
       }
     });
 
     this.subscription.add(subscription);
-  }
-
-  private loadMockAbsences(): void {
-    // Mock data for development/testing
-    this.absences = [
-      {
-        id: 1,
-        userId: 1,
-        date: new Date().toISOString().split('T')[0],
-        status: 'NOT_JUSTIFIED',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@company.com',
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 2,
-        userId: 2,
-        date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
-        status: 'NOT_JUSTIFIED',
-        firstName: 'Jane',
-        lastName: 'Smith',
-        email: 'jane.smith@company.com',
-        createdAt: new Date(Date.now() - 86400000).toISOString()
-      },
-      {
-        id: 3,
-        userId: 3,
-        date: new Date(Date.now() - 172800000).toISOString().split('T')[0],
-        status: 'NOT_JUSTIFIED',
-        firstName: 'Bob',
-        lastName: 'Johnson',
-        email: 'bob.johnson@company.com',
-        createdAt: new Date(Date.now() - 172800000).toISOString()
-      }
-    ];
-
-    this.generateNotificationsFromAbsences(this.absences);
-  }
-
-  private generateNotificationsFromAbsences(absences: Absence[]): void {
-    this.notifications = absences.map(absence => {
-      const employeeName = `${absence.firstName || 'Unknown'} ${absence.lastName || 'Employee'}`;
-      const absenceDate = new Date(absence.date);
-      const now = new Date();
-      const daysDiff = Math.floor((now.getTime() - absenceDate.getTime()) / (1000 * 3600 * 24));
-
-      let type: 'NEW_ABSENCE' | 'REMINDER' | 'DEADLINE';
-      let message: string;
-
-      if (absence.status === 'NOT_JUSTIFIED') {
-        if (daysDiff === 0) {
-          type = 'NEW_ABSENCE';
-          message = 'New absence detected - requires justification';
-        } else if (daysDiff <= 3) {
-          type = 'REMINDER';
-          message = `Absence from ${daysDiff} day(s) ago needs justification`;
-        } else {
-          type = 'DEADLINE';
-          message = `URGENT: Absence justification overdue (${daysDiff} days)`;
-        }
-      } else {
-        type = 'REMINDER';
-        message = 'Absence justification under review';
-      }
-
-      return {
-        id: absence.id?.toString() || Date.now().toString(),
-        employeeName,
-        date: absenceDate,
-        type,
-        message,
-        isRead: false,
-        absence
-      };
-    });
-
-    this.updateUnreadCount();
-  }
-
-  startNotificationPolling(): void {
-    // Poll for new absences every 60 seconds
-    const polling = setInterval(() => {
-      this.loadAbsences();
-    }, 60000);
-
-    this.subscription.add(() => clearInterval(polling));
   }
 
   selectAbsence(absence: Absence): void {

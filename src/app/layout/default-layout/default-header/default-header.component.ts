@@ -92,7 +92,6 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit, O
 
   loadNotifications(page: number): void {
     this.fetchingResult = true;
-
     this.subscriptions.push(
       this.getNotifications(page)
     );
@@ -139,6 +138,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit, O
         this.fetchingResult = false;
         if (Array.isArray(res)) {
           this.notifications = [...res];
+          this.chatNotificationRealTimeService.setCurrentNotificationCount(res.length)
           this.hasMoreNotifications = res.length > 0;
           this.resultPage++;
         } else {

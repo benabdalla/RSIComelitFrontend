@@ -1,5 +1,4 @@
-import { Routes } from '@angular/router';
-import '@angular/localize/init';
+import {Routes} from '@angular/router';
 
 export const routes: Routes = [
   {

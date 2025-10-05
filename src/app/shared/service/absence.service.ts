@@ -1,15 +1,16 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, forkJoin, map, catchError, of } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {catchError, forkJoin, map, Observable, of} from 'rxjs';
 import {
   Absence,
-  CreateAbsenceRequest,
-  AbsenceResponse,
   AbsencePaginationParams,
+  AbsenceResponse,
+  CreateAbsenceRequest,
   EmployeeWithAbsence,
   User
 } from '../../../app/shared/model/absence.model';
-import { environment } from '../../../environments/environment';
+import {environment} from '../../../environments/environment';
+import {Page} from './page.model';
 
 @Injectable({
   providedIn: 'root'
@@ -377,7 +378,7 @@ export class AbsenceService {
   /**
    * Get absences that need justification
    */
-  getAbsencesNeedingJustification(): Observable<Absence[]> {
-    return this.http.get<Absence[]>(`${this.apiUrl}/needing-justification`);
+  getAbsencesNeedingJustification(): Observable<Page<Absence>> {
+    return this.http.get<Page<Absence>>(`${this.apiUrl}/needing-justification`);
   }
 }
