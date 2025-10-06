@@ -1,8 +1,10 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import {HttpInterceptorFn} from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  if (req.url.includes('/api/v1/auth')) {
+    return next(req);
+  }
   const token = localStorage.getItem('token');
-  // console.log('JWT token:', token);
   if (token) {
     req = req.clone({
       setHeaders: {
