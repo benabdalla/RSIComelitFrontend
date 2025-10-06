@@ -25,7 +25,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {AddAbsenceModalComponent} from './add-absence-modal/add-absence-modal.component';
 import {JustificationModalComponent} from './justification-modal/justification-modal.component';
 import {AbsenceService} from '../shared/service/absence.service';
-import {Absence, AbsenceResponse} from '../shared/model/absence.model';
+import {Absence} from '../shared/model/absence.model';
+import {Page} from '../shared/service/page.model';
 
 @Component({
   selector: 'app-absence-list-component',
@@ -120,12 +121,12 @@ export class AbsenceListComponent implements OnInit {
     this.error = null;
 
     this.absenceService.getAbsences({ page: 1, limit: 100 }).subscribe({
-      next: (response: AbsenceResponse) => {
+      next: (response: Page<Absence>) => {
         console.log('Service response:', response);
 
-        if (response && Array.isArray(response.absences)) {
+        if (response && Array.isArray(response.data)) {
           // FIXED: Keep date as string to match interface
-          this.absences = response.absences.map(absence => ({
+          this.absences = response.data.map(absence => ({
             ...absence,
             firstName: absence.user?.firstName || absence.firstName || 'N/A',
             lastName: absence.user?.lastName || absence.lastName || 'N/A',

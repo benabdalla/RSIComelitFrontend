@@ -39,7 +39,7 @@ export class AbsenceService {
   /**
    * Get all absences with pagination and filters
    */
-  getAbsences(params?: AbsencePaginationParams): Observable<AbsenceResponse> {
+  getAbsences(params?: AbsencePaginationParams): Observable<Page<Absence>> {
     let httpParams = new HttpParams();
 
     if (params) {
@@ -58,7 +58,7 @@ export class AbsenceService {
       }
     }
 
-    return this.http.get<AbsenceResponse>(this.apiUrl, { params: httpParams });
+    return this.http.get<Page<Absence>>(this.apiUrl, {params: httpParams});
   }
 
   /**
@@ -194,7 +194,7 @@ export class AbsenceService {
 
     return this.getAbsences(paginationParams).pipe(
       map(response => {
-        const employees: EmployeeWithAbsence[] = response.absences.map(absence => ({
+        const employees: EmployeeWithAbsence[] = response.data.map(absence => ({
           id: absence.user?.id || absence.userId || 0,
           firstName: absence.user?.firstName || 'Unknown',
           lastName: absence.user?.lastName || 'User',
